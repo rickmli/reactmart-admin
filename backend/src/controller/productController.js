@@ -4,31 +4,25 @@ export async function getAllProducts(req, res) {
   console.log("[HIT] GET /products");
   try {
     const products = await Product.find().sort({ createdAt: -1 }); //newest first
-    res.status(200).json(products);
+    return res.status(200).json(products);
   } catch (error) {
     console.error("Error in getAllProducts controller", error);
-    res.status(500).json({ message: "Internal server errror" });
+    return res.status(500).json({ message: "Internal server errror" });
   }
 }
-// export async function getNote(req, res) {
-//   console.log("[HIT] GET /notes");
-//   try {
-//     const note = await Note.findById(req.params.id);
-//     res.status(200).json(note);
-//   } catch (error) {
-//     console.error("Error in getAllNotes controller", error);
-//     res.status(500).json({ message: "Internal server errror" });
-//   }
-// }
+
 export async function getProduct(req, res) {
   console.log("[HIT] GET /products/:id");
   try {
     const { id } = req.params;
-    const products = await Product.findById(id);
-    res.status(200).json(products);
+    const product = await Product.findById(id);
+    if (!product) {
+      res.status(404).json({ message: "Product not found" });
+    }
+    return res.status(200).json(product);
   } catch (error) {
     console.error("Error in getProduct controller", error);
-    res.status(500).json({ message: "Internal server errror" });
+    return res.status(500).json({ message: "Internal server errror" });
   }
 }
 
@@ -47,10 +41,10 @@ export async function createProduct(req, res) {
 
     await newProduct.save();
 
-    res.status(201).json(newProduct);
+    return res.status(201).json(newProduct);
   } catch (error) {
     console.error("Error in createProduct controller", error);
-    res.status(500).json({ message: "Internal server errror" });
+    return res.status(500).json({ message: "Internal server errror" });
   }
 }
 
@@ -59,27 +53,29 @@ export async function updateProduct(req, res) {
   try {
     const { name, price, stock, description, category, images } = req.body;
     const { id } = req.params;
+    // 只包含有值的字段
+    const updateFields = {};
+    if (name !== undefined) updateFields.name = name;
+    if (price !== undefined) updateFields.price = price;
+    if (stock !== undefined) updateFields.stock = stock;
+    if (description !== undefined) updateFields.description = description;
+    if (category !== undefined) updateFields.category = category;
+    if (images !== undefined) updateFields.images = images;
+
     const updatedProduct = await Product.findByIdAndUpdate(
       id,
-      {
-        name,
-        price,
-        stock,
-        description,
-        category,
-        images,
-      },
-      { new: true }
+      { $set: updateFields }, // 关键：使用 $set
+      { new: true, runValidators: true }
     );
 
     if (!updatedProduct) {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    res.status(200).json({ message: "Product updated" });
+    return res.status(200).json({ message: "Product updated" });
   } catch (error) {
     console.error("Error in updateProduct controller", error);
-    res.status(500).json({ message: "Internal server errror" });
+    return res.status(500).json({ message: "Internal server errror" });
   }
 }
 
@@ -90,10 +86,10 @@ export async function deleteProduct(req, res) {
 
     await Product.findByIdAndDelete(id);
 
-    res.status(200).json({ message: "Product deleted" });
+    return res.status(200).json({ message: "Product deleted" });
   } catch (error) {
     console.error("Error in deleteProduct controller", error);
-    res.status(500).json({ message: "Internal server errror" });
+    return res.status(500).json({ message: "Internal server errror" });
   }
 }
 
@@ -102,10 +98,10 @@ export async function deleteAllProducts(req, res) {
   try {
     await Product.deleteMany();
 
-    res.status(200).json({ message: "All Products deleted" });
+    return res.status(200).json({ message: "All Products deleted" });
   } catch (error) {
     console.error("Error in deleteAllProducts controller", error);
-    res.status(500).json({ message: "Internal server errror" });
+    return res.status(500).json({ message: "Internal server errror" });
   }
 }
 
@@ -139,7 +135,7 @@ export async function seedProducts(req, res) {
     const createdProducts = await Product.insertMany(testProducts);
 
     // 5. 返回成功响应
-    res.status(201).json({
+    return res.status(201).json({
       message: `Successfully seeded ${createdProducts.length} products${
         shouldReset ? " (after reset)" : ""
       }`,
@@ -154,7 +150,7 @@ export async function seedProducts(req, res) {
     });
   } catch (error) {
     console.error("Error in seedProducts controller", error);
-    res.status(500).json({
+    return res.status(500).json({
       message: "Failed to seed products",
       error: error.message,
     });

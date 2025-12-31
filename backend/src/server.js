@@ -1,10 +1,12 @@
 import express from "express";
 import productRouter from "./routes/productRouter.js"; // 加上 .js
+import userRouter from "./routes/userRouter.js"; // 加上 .js
 import { connectDB } from "./config/db.js";
 import dotenv from "dotenv";
 // import rateLimiter from "./middleware/rateLimiter.js";
 import cors from "cors";
 import path from "path";
+import { clerkMiddleware } from "@clerk/express";
 
 // configs
 dotenv.config();
@@ -21,9 +23,11 @@ if (process.env.NODE_ENV !== "production") {
 }
 app.use(express.json()); // 如果后面要处理 POST/JSON，建议加上
 // app.use(rateLimiter);
+app.use(clerkMiddleware());
 
 // routes
 app.use("/api/products", productRouter);
+app.use("/api/users", userRouter);
 
 // dev/production filter
 // if (process.env.NODE_ENV === "production") {
