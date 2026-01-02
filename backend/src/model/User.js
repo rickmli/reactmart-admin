@@ -16,19 +16,21 @@ const userSchema = new mongoose.Schema(
       default: "user",
     },
     email: {
-      type: String, // 修正：类型应为 String
-      unique: true, // 邮箱通常也需要唯一
-      lowercase: true, // 自动转为小写存储
-      match: [/^\S+@\S+\.\S+$/, "请输入有效的邮箱地址"], // 邮箱格式验证
-    },
-    role: {
       type: String,
-      enum: ["admin", "seller", "user", "root"], // 限制为这三个值
-      default: "user", // 默认值为 "user"
+      unique: true,
+      lowercase: true,
+      match: [/^\S+@\S+\.\S+$/, "Please enter a valid email address"],
     },
+    role: [
+      {
+        type: String,
+        enum: ["product-admin", "order-admin", "system-admin", "guest"],
+        default: "guest",
+      },
+    ],
     avatar: {
       type: String,
-      default: "https://mockmind-api.uifaces.co/content/abstract/41.jpg", // 可设置默认头像链接
+      default: "https://mockmind-api.uifaces.co/content/abstract/41.jpg",
       validate: {
         // 简单的URL格式验证
         validator: function (v) {

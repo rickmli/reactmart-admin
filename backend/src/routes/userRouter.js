@@ -1,24 +1,20 @@
 import express from "express";
 import {
-  createUser,
+  createMyAccount,
   getAllUsers,
+  getMyClerkInfo,
   getUser,
-  getUserClerkInfo,
-  updateUser,
+  updateMySetting,
 } from "../controller/userController.js";
 import { requireAuth } from "@clerk/express";
 
 const router = express.Router();
 
-router.get("/clerkInfo", requireAuth(), getUserClerkInfo);
-router.get("/:id", getUser);
 router.get("/", getAllUsers);
-router.post("/", requireAuth(), createUser);
-router.put("/:id", requireAuth(), updateUser);
-// router.delete("/:id", deleteProduct);
-// router.delete("/", deleteAllUsers);
-
-// seeding Products
-// router.post("/seedProducts", seedProducts);
+router.get("/:id", getUser);
+router.get("/clerkInfo", requireAuth(), getMyClerkInfo);
+router.post("/", requireAuth(), createMyAccount);
+router.put("/:id", requireAuth(), updateMySetting);
+// todo router.put("/:id", requireAuth(), deleteMyUser); also have to delete user clerk's account
 
 export default router;

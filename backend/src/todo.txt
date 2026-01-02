@@ -7,16 +7,17 @@
 3. built User schema, router, controllers
 4. created user using clerk's info
 
-
-
-// Unfinished
+// Second day
+5. implement error handing using middleware at backend system
+6. create role validation middleware checking user's permission
 
 // For tomorrow
-5. implement error handing using middleware at backend system
-6. main admin page along based on intro to ant design
+
+7. main admin page along based on intro to ant design
 7. built order schema, router, controllers
 
 
 // Future
+0. built system setting schema, router, controllers
 0. built coupon schema, router, controllers
 0. built event schema, router, controllers

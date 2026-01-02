@@ -67,6 +67,23 @@ function App() {
     alert(`我的角色: ${user?.publicMetadata?.role || "未设置"}`);
   };
 
+  const handleProductSearch = async () => {
+    try {
+      const token = await getToken();
+      const response = await fetch("http://localhost:5001/api/products/", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`, // 🚨 关键：将令牌放在请求头
+          "Content-Type": "application/json",
+        },
+      });
+      const result = await response.json();
+      console.log("查询结果:", result);
+    } catch (error) {
+      console.error("获取令牌失败:", error);
+    }
+  };
+
   return (
     <div className="p-8">
       <h1 className="text-3xl font-bold text-blue-600 mb-6">
@@ -150,6 +167,13 @@ function App() {
               className="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600"
             >
               查看我的角色
+            </button>
+
+            <button
+              onClick={handleProductSearch}
+              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 mr-3"
+            >
+              点击查询product;
             </button>
           </div>
         </div>

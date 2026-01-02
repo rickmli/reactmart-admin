@@ -25,7 +25,7 @@ export async function getUser(req, res) {
   return res.status(200).json(user);
 }
 
-export async function getUserClerkInfo(req, res) {
+export async function getMyClerkInfo(req, res) {
   console.log("[HIT] GET /users/clerkInfo");
   const { userId } = getAuth(req);
   if (!userId) {
@@ -62,7 +62,7 @@ export async function getUserClerkInfo(req, res) {
   });
 }
 
-export async function createUser(req, res) {
+export async function createMyAccount(req, res) {
   console.log("[HIT] POST /users");
 
   const { userId } = getAuth(req);
@@ -111,9 +111,9 @@ export async function createUser(req, res) {
   return res.status(201).json({ newUser });
 }
 
-export async function updateUser(req, res) {
+export async function updateMySetting(req, res) {
   console.log("[HIT] PUT /users/:id");
-  const { username, name, avatar, email, lastSignInAt } = req.body;
+  const { username, name, avatar, email, lastSignInAt, role } = req.body;
   const { id } = req.params;
 
   const updateFields = {};
@@ -122,6 +122,7 @@ export async function updateUser(req, res) {
   if (email !== undefined) updateFields.email = email;
   if (avatar !== undefined) updateFields.avatar = avatar;
   if (lastSignInAt !== undefined) updateFields.lastSignInAt = lastSignInAt;
+  updateFields.role = role;
 
   const updatedProduct = await User.findByIdAndUpdate(
     id,
