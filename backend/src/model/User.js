@@ -12,6 +12,8 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
+      maxlength: [20, "User's name should not exceed 200 words"],
+      default: "user",
     },
     email: {
       type: String, // 修正：类型应为 String
@@ -27,6 +29,13 @@ const userSchema = new mongoose.Schema(
     avatar: {
       type: String,
       default: "https://mockmind-api.uifaces.co/content/abstract/41.jpg", // 可设置默认头像链接
+      validate: {
+        // 简单的URL格式验证
+        validator: function (v) {
+          return /^(https?:\/\/).*\.(jpg|jpeg|png|webp|gif)$/i.test(v);
+        },
+        message: "Images should only contain (jpg, jpeg, png, webp, gif)",
+      },
     },
     isActive: {
       type: Boolean,
@@ -40,6 +49,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       unique: true,
       required: true,
+      immutable: true,
     },
   },
   {

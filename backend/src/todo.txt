@@ -1,3 +1,22 @@
-// USER
-implement clerk
-build user system using clerk's session id;
+// Completed
+
+// First day
+0. set up server with node, express, mongoose, and mongodb
+1. built Product schema, router, controllers
+2. implemented clerk for authenticaiton at frontend and backend 
+3. built User schema, router, controllers
+4. created user using clerk's info
+
+
+
+// Unfinished
+
+// For tomorrow
+5. implement error handing using middleware at backend system
+6. main admin page along based on intro to ant design
+7. built order schema, router, controllers
+
+
+// Future
+0. built coupon schema, router, controllers
+0. built event schema, router, controllers

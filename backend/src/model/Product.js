@@ -46,10 +46,21 @@ const productSchema = new mongoose.Schema(
           validator: function (v) {
             return /^(https?:\/\/).*\.(jpg|jpeg|png|webp|gif)$/i.test(v);
           },
-          message: "请输入有效的图片URL (jpg, png, webp, gif)",
+          message: "Images should only contain (jpg, jpeg, png, webp, gif)",
         },
       },
     ],
+    defaultImage: {
+      type: String,
+      default:
+        "https://as1.ftcdn.net/v2/jpg/17/99/62/82/1000_F_1799628274_Kvj9QNKNJQkDafMnyTmqKsNhmpZq6UCC.jpg",
+      validate: {
+        validator: function (v) {
+          return /^(https?:\/\/).*\.(jpg|jpeg|png|webp|gif)$/i.test(v);
+        },
+        message: "Default image should be a valid image URL",
+      },
+    },
     // 🔥 建议新增：商品状态字段
     status: {
       type: String,
@@ -88,6 +99,8 @@ productSchema.virtual("isOutOfStock").get(function () {
 productSchema.virtual("formattedPrice").get(function () {
   return `$${this.price.toFixed(2)}`;
 });
+
+// todo sku
 
 const Product = mongoose.model("Product", productSchema);
 export default Product;
