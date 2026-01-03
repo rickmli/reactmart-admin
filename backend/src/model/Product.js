@@ -58,7 +58,7 @@ const productSchema = new mongoose.Schema(
         validator: function (v) {
           return /^(https?:\/\/).*\.(jpg|jpeg|png|webp|gif)$/i.test(v);
         },
-        message: "Default image should be a valid image URL",
+        message: "Images should only contain (jpg, jpeg, png, webp, gif)",
       },
     },
     // 🔥 建议新增：商品状态字段
