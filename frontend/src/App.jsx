@@ -7,7 +7,7 @@ const App = () => {
     <Routes>
       <Route element={<ProjectLayout />}>
         <Route index element={<MainPage />} />
-        <Route path="contact" element={<Contact />} />
+        {/* <Route path="contact" element={<Contact />} /> */}
       </Route>
     </Routes>
   );
