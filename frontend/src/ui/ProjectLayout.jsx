@@ -5,15 +5,18 @@ import SideNav from "../components/SideNav";
 import { useState } from "react";
 import MainContent from "../components/MainContent";
 import Footer from "../components/Footer";
+import { Outlet } from "react-router";
 
-function ProjectLayout({ children }) {
+function ProjectLayout() {
   const [collapsed, setCollapsed] = useState(false);
   return (
     <Layout className="h-screen">
       <SideNav collapsed={collapsed} setCollapsed={setCollapsed} />
       <Layout className="h-full flex flex-column bg-gray-400">
         <Header setCollapsed={setCollapsed} collapsed={collapsed} />
-        <MainContent className="flex-1">{children}</MainContent>
+        <MainContent className="flex-1">
+          <Outlet />
+        </MainContent>
         <Footer />
       </Layout>
     </Layout>
